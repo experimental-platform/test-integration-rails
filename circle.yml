@@ -1,0 +1,27 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker build -t test-integration-rails:latest .
+
+test:
+  pre:
+    - >
+      docker run
+      -e "CIRCLE_PROJECT_REPONAME=${CIRCLE_PROJECT_REPONAME}"
+      -e "CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}"
+      -e "IMAGE=${IMAGE:-coreos-beta}"
+      -e "CHANNEL=${CHANNEL:-development}"
+      -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+      -e "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+      --name=test-integration-rails-init test-integration-rails:latest /initialize.sh
+    - docker commit test-integration-rails-init test-integration-rails:latest
+  override:
+    - docker run --name=test-integration-rails test-integration-rails:latest /run_tests.sh
+  post:
+    - docker run --name=DUMP-test-integration-rails test-integration-rails:latest vagrant ssh -- sudo journalctl
+    - docker run --name=DESTROY-test-integration-rails test-integration-rails:latest vagrant destroy -f
+    # TODO: Collect container as an asset?
+
