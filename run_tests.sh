@@ -2,9 +2,6 @@
 
 # enable fail detection...
 set -e
-source /initialize.sh
-initialize
-
 
 echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 HOSTIP=$(vagrant ssh-config | awk '/HostName/ {print $2}')
