@@ -18,7 +18,9 @@ test:
   override:
     - docker run --name=test-integration-rails test-integration-rails:latest /run_tests.sh
   post:
+    - docker run test-integration-rails:latest ssh-keygen -l -f /.ssh/id_rsa | awk '{ print $2 }' > ~/sshid
     - docker run --name=DUMP-test-integration-rails test-integration-rails:latest vagrant ssh -- sudo journalctl
     - docker run --name=DESTROY-test-integration-rails test-integration-rails:latest vagrant destroy -f
+    - 'curl -f -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer ${APIKEY}" https://api.digitalocean.com/v2/account/keys/$(cat ~/sshid)'
     # TODO: Collect container as an asset?
 
