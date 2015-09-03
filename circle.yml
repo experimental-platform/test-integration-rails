@@ -5,6 +5,9 @@ machine:
 dependencies:
   override:
     - docker build -t test-integration-rails:latest .
+
+test:
+  pre:
     - >
       docker run
       -e "APIKEY=${APIKEY}"
@@ -13,8 +16,6 @@ dependencies:
       -e "IMAGE=${IMAGE:-coreos-beta}"
       --name=test-integration-rails-init test-integration-rails:latest /initialize.sh
     - docker commit test-integration-rails-init test-integration-rails:latest
-
-test:
   override:
     - docker run --name=test-integration-rails test-integration-rails:latest /run_tests.sh
   post:
