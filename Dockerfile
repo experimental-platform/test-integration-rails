@@ -1,4 +1,4 @@
-FROM experimentalplatform/test-integration-baseimage:latest
+FROM experimentalplatform/test-integration-baseimage:aws
 
 ADD run_tests.sh /run_tests.sh
 RUN chmod 755 /run_tests.sh
