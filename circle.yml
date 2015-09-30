@@ -15,6 +15,8 @@ test:
       -e "CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}"
       -e "IMAGE=${IMAGE:-coreos-beta}"
       -e "CHANNEL=${CHANNEL:-development}"
+      -e "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+      -e "AWS_SECRET_KEY=${AWS_SECRET_KEY}"
       --name=test-integration-rails-init test-integration-rails:aws /initialize.sh
     - docker commit test-integration-rails-init test-integration-rails:aws
   override:
