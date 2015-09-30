@@ -25,6 +25,5 @@ test:
     - docker run test-integration-rails:aws ssh-keygen -l -f /.ssh/id_rsa | awk '{ print $2 }' > ~/sshid
     - docker run --name=DUMP-test-integration-rails test-integration-rails:aws vagrant ssh -- sudo journalctl
     - docker run --name=DESTROY-test-integration-rails test-integration-rails:aws vagrant destroy -f
-    - 'curl -f -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer ${APIKEY}" https://api.digitalocean.com/v2/account/keys/$(cat ~/sshid)'
     # TODO: Collect container as an asset?
 
