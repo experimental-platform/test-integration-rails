@@ -5,7 +5,7 @@ install:
   - docker build -t test-integration-rails:latest .
   - >
     docker run
-    -e "CIRCLE_PROJECT_REPONAME=${TRAVIS_REPO_SLUG}"
+    -e "CIRCLE_PROJECT_REPONAME=$(echo $TRAVIS_REPO_SLUG | cut -f2 -d '/')"
     -e "CIRCLE_BUILD_NUM=${TRAVIS_BUILD_NUMBER}"
     -e "IMAGE=${IMAGE:-coreos-beta}"
     -e "CHANNEL=${CHANNEL:-development}"
