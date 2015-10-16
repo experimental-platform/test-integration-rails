@@ -14,10 +14,6 @@ install:
     --name=test-integration-rails-init test-integration-rails:latest /initialize.sh
   - docker commit test-integration-rails-init test-integration-rails:latest
 script:
-  - go build -v
-  - docker build -t experimentalplatform/app-manager:$TRAVIS_BRANCH .
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  - docker push experimentalplatform/app-manager:$TRAVIS_BRANCH
   - docker run --name=test-integration-rails test-integration-rails:latest /run_tests.sh
 after_script:
   - docker run --name=DUMP-test-integration-rails test-integration-rails:latest vagrant ssh -- sudo journalctl
